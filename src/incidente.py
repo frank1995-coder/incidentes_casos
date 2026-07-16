@@ -1,55 +1,55 @@
-from .base_datos import db, get_next_id
+from .base_datos import db, obtener_siguiente_id
 
-class IncidentNotFoundError(Exception):
+class IncidenciaNoEncontradaError(Exception):
     """Excepción personalizada para incidencia no encontrada."""
     pass
 
-def create_incident(title: str, description: str, priority: str, assigned_to: str) -> dict:
+def crear_incidencia(titulo: str, descripcion: str, prioridad: str, asignado_a: str) -> dict:
     """Crea una nueva incidencia y la almacena."""
-    if priority not in ("baja", "media", "alta", "crítica"):
+    if prioridad not in ("baja", "media", "alta", "crítica"):
         raise ValueError("Prioridad no válida. Use: baja, media, alta, crítica.")
 
-    incident_id = get_next_id()
-    incident = {
-        "id": incident_id,
-        "title": title.strip(),
-        "description": description.strip(),
-        "priority": priority,
-        "status": "abierta",
-        "assigned_to": assigned_to.strip()
+    id_incidencia = obtener_siguiente_id()
+    incidencia = {
+        "id": id_incidencia,
+        "titulo": titulo.strip(),
+        "descripcion": descripcion.strip(),
+        "prioridad": prioridad,
+        "estado": "abierta",
+        "asignado_a": asignado_a.strip()
     }
-    db["incidents"][incident_id] = incident
-    return incident
+    db["incidencias"][id_incidencia] = incidencia
+    return incidencia
 
-def get_incident(incident_id: int) -> dict:
-    """Obtiene una incidencia por ID. Lanza IncidentNotFoundError si no existe."""
-    incident = db["incidents"].get(incident_id)
-    if incident is None:
-        raise IncidentNotFoundError(f"Incidencia con ID {incident_id} no encontrada.")
-    return incident
+def obtener_incidencia(id_incidencia: int) -> dict:
+    """Obtiene una incidencia por ID. Lanza IncidenciaNoEncontradaError si no existe."""
+    incidencia = db["incidencias"].get(id_incidencia)
+    if incidencia is None:
+        raise IncidenciaNoEncontradaError(f"Incidencia con ID {id_incidencia} no encontrada.")
+    return incidencia
 
-def update_incident(incident_id: int, **kwargs) -> dict:
+def actualizar_incidencia(id_incidencia: int, **kwargs) -> dict:
     """Actualiza campos de una incidencia existente."""
-    incident = get_incident(incident_id)
-    allowed_fields = {"title", "description", "priority", "status", "assigned_to"}
-    for key, value in kwargs.items():
-        if key not in allowed_fields:
-            raise ValueError(f"Campo no permitido: {key}")
-        if key == "priority" and value not in ("baja", "media", "alta", "crítica"):
+    incidencia = obtener_incidencia(id_incidencia)
+    campos_permitidos = {"titulo", "descripcion", "prioridad", "estado", "asignado_a"}
+    for clave, valor in kwargs.items():
+        if clave not in campos_permitidos:
+            raise ValueError(f"Campo no permitido: {clave}")
+        if clave == "prioridad" and valor not in ("baja", "media", "alta", "crítica"):
             raise ValueError("Prioridad no válida.")
-        incident[key] = value.strip() if isinstance(value, str) else value
-    db["incidents"][incident_id] = incident
-    return incident
+        incidencia[clave] = valor.strip() if isinstance(valor, str) else valor
+    db["incidencias"][id_incidencia] = incidencia
+    return incidencia
 
-def delete_incident(incident_id: int) -> bool:
+def eliminar_incidencia(id_incidencia: int) -> bool:
     """Elimina una incidencia. Retorna True si existía, False si no."""
-    if incident_id in db["incidents"]:
-        del db["incidents"][incident_id]
+    if id_incidencia in db["incidencias"]:
+        del db["incidencias"][id_incidencia]
         return True
     return False
 
-def list_incidents(filter_status: str = None) -> list:
+def listar_incidencias(estado_filtro: str = None) -> list:
     """Lista todas las incidencias, opcionalmente filtradas por estado."""
-    if filter_status:
-        return [inc for inc in db["incidents"].values() if inc["status"] == filter_status]
-    return list(db["incidents"].values())
+    if estado_filtro:
+        return [inc for inc in db["incidencias"].values() if inc["estado"] == estado_filtro]
+    return list(db["incidencias"].values())

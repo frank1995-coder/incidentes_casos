@@ -1,71 +1,71 @@
 import pytest
-from src.incidente import (
-    create_incident,
-    get_incident,
-    update_incident,
-    delete_incident,
-    list_incidents,
-    IncidentNotFoundError
+from src.incidencia import (
+    crear_incidencia,
+    obtener_incidencia,
+    actualizar_incidencia,
+    eliminar_incidencia,
+    listar_incidencias,
+    IncidenciaNoEncontradaError
 )
 from src.base_datos import db
 
 @pytest.fixture(autouse=True)
-def clean_db():
+def limpiar_base_datos():
     """Limpia la base de datos antes de cada prueba."""
-    db["incidents"].clear()
-    db["next_id"] = 1
+    db["incidencias"].clear()
+    db["siguiente_id"] = 1
 
 # ---------- Unitarias y regresión ----------
 
 @pytest.mark.regression
-def test_create_incident_success():
-    inc = create_incident("Fallo en login", "No permite acceso", "alta", "Juan Pérez")
+def test_crear_incidencia_exitoso():
+    inc = crear_incidencia("Fallo en login", "No permite acceso", "alta", "Juan Pérez")
     assert inc["id"] == 1
-    assert inc["title"] == "Fallo en login"
-    assert inc["status"] == "abierta"
-    assert len(db["incidents"]) == 1
+    assert inc["titulo"] == "Fallo en login"
+    assert inc["estado"] == "abierta"
+    assert len(db["incidencias"]) == 1
 
-def test_create_incident_invalid_priority():
+def test_crear_incidencia_prioridad_invalida():
     with pytest.raises(ValueError, match="Prioridad no válida"):
-        create_incident("Título", "Desc", "urgente", "Ana")
+        crear_incidencia("Título", "Desc", "urgente", "Ana")
 
 @pytest.mark.regression
-def test_get_incident_existing():
-    create_incident("Problema red", "Sin conexión", "crítica", "Admin")
-    inc = get_incident(1)
-    assert inc["priority"] == "crítica"
+def test_obtener_incidencia_existente():
+    crear_incidencia("Problema red", "Sin conexión", "crítica", "Admin")
+    inc = obtener_incidencia(1)
+    assert inc["prioridad"] == "crítica"
 
 @pytest.mark.regression
-def test_get_incident_not_found():
-    with pytest.raises(IncidentNotFoundError):
-        get_incident(99)
+def test_obtener_incidencia_no_encontrada():
+    with pytest.raises(IncidenciaNoEncontradaError):
+        obtener_incidencia(99)
 
 @pytest.mark.regression
-def test_update_incident():
-    create_incident("Bug", "Desc", "baja", "Dev")
-    updated = update_incident(1, status="cerrada", assigned_to="QA")
-    assert updated["status"] == "cerrada"
-    assert updated["assigned_to"] == "QA"
+def test_actualizar_incidencia():
+    crear_incidencia("Bug", "Desc", "baja", "Dev")
+    actualizada = actualizar_incidencia(1, estado="cerrada", asignado_a="QA")
+    assert actualizada["estado"] == "cerrada"
+    assert actualizada["asignado_a"] == "QA"
 
-def test_update_incident_invalid_field():
-    create_incident("Bug", "Desc", "baja", "Dev")
+def test_actualizar_incidencia_campo_invalido():
+    crear_incidencia("Bug", "Desc", "baja", "Dev")
     with pytest.raises(ValueError, match="Campo no permitido"):
-        update_incident(1, no_existe="valor")
+        actualizar_incidencia(1, no_existe="valor")
 
 @pytest.mark.regression
-def test_delete_incident():
-    create_incident("Test", "Desc", "media", "User")
-    assert delete_incident(1) is True
-    assert len(db["incidents"]) == 0
+def test_eliminar_incidencia():
+    crear_incidencia("Test", "Desc", "media", "User")
+    assert eliminar_incidencia(1) is True
+    assert len(db["incidencias"]) == 0
 
-def test_delete_incident_not_exist():
-    assert delete_incident(10) is False
+def test_eliminar_incidencia_no_existe():
+    assert eliminar_incidencia(10) is False
 
 @pytest.mark.regression
-def test_list_incidents_with_filter():
-    create_incident("Inc1", "d", "baja", "A")
-    create_incident("Inc2", "d", "media", "B")
-    update_incident(1, status="cerrada")
-    result = list_incidents(filter_status="cerrada")
-    assert len(result) == 1
-    assert result[0]["id"] == 1
+def test_listar_incidencias_con_filtro():
+    crear_incidencia("Inc1", "d", "baja", "A")
+    crear_incidencia("Inc2", "d", "media", "B")
+    actualizar_incidencia(1, estado="cerrada")
+    resultado = listar_incidencias(estado_filtro="cerrada")
+    assert len(resultado) == 1
+    assert resultado[0]["id"] == 1

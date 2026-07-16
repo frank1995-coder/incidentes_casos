@@ -1,10 +1,10 @@
 # Simulación de base de datos en memoria
 db = {
-    "incidents": {},
-    "next_id": 1
+    "incidencias": {},
+    "siguiente_id": 1
 }
 
-def get_next_id():
-    current = db["next_id"]
-    db["next_id"] += 1
-    return current
+def obtener_siguiente_id():
+    actual = db["siguiente_id"]
+    db["siguiente_id"] += 1
+    return actual

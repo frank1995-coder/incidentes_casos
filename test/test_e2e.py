@@ -15,37 +15,37 @@ def limpiar_base_datos():
     db["siguiente_id"] = 1
 
 def test_flujo_completo_e2e():
-    # 1. Crear incidencias
+
     inc1 = crear_incidencia("Caída del sistema", "No responde", "crítica", "Soporte")
     inc2 = crear_incidencia("Error en reporte", "PDF no se genera", "alta", "Finanzas")
     inc3 = crear_incidencia("Lentitud en consulta", "Demora 10s", "media", "IT")
 
-    # 2. Verificar que se crearon correctamente
+
     assert len(listar_incidencias()) == 3
     assert inc1["estado"] == "abierta"
     assert inc2["estado"] == "abierta"
     assert inc3["estado"] == "abierta"
 
-    # 3. Actualizar estado de una incidencia (simular cierre)
+
     actualizada = actualizar_incidencia(inc2["id"], estado="cerrada")
     assert actualizada["estado"] == "cerrada"
 
-    # 4. Listar solo las abiertas
+
     abiertas = listar_incidencias(estado_filtro="abierta")
     assert len(abiertas) == 2
     ids_abiertas = {inc["id"] for inc in abiertas}
     assert inc1["id"] in ids_abiertas
     assert inc3["id"] in ids_abiertas
 
-    # 5. Eliminar una incidencia
+
     assert eliminar_incidencia(inc3["id"]) is True
     assert len(listar_incidencias()) == 2
-    with pytest.raises(Exception):  # obtener_incidencia lanza IncidenciaNoEncontradaError
+    with pytest.raises(Exception): 
         obtener_incidencia(inc3["id"])
 
-    # 6. Intento de eliminar una incidencia ya borrada
+
     assert eliminar_incidencia(inc3["id"]) is False
 
-    # 7. Verificar que la incidencia restante se puede leer
+  
     inc = obtener_incidencia(inc1["id"])
     assert inc["titulo"] == "Caída del sistema"

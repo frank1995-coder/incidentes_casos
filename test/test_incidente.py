@@ -1,5 +1,5 @@
 import pytest
-from src.incidencia import (
+from src.incidente import (
     crear_incidencia,
     obtener_incidencia,
     actualizar_incidencia,

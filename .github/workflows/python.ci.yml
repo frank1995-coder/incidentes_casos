@@ -14,10 +14,10 @@ jobs:
       - name: Configurar Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.13'
+          python-version: '3.11'
       - name: Instalar dependencias
         run: pip install -r requirements.txt
-      - name: Ejecutar pruebas con cobertura
+      - name: Ejecutar todas las pruebas (unitarias, regresión, e2e) con cobertura
         run: coverage run -m pytest test/
-      - name: Generar reporte de cobertura
+      - name: Verificar cobertura >= 80%
         run: coverage report -m --fail-under=80

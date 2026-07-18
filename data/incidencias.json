@@ -1,0 +1,21 @@
+{
+    "incidencias": {
+        "1": {
+            "id": 1,
+            "titulo": "Inc1",
+            "descripcion": "d",
+            "prioridad": "baja",
+            "estado": "cerrada",
+            "asignado_a": "A"
+        },
+        "2": {
+            "id": 2,
+            "titulo": "Inc2",
+            "descripcion": "d",
+            "prioridad": "media",
+            "estado": "abierta",
+            "asignado_a": "B"
+        }
+    },
+    "siguiente_id": 3
+}

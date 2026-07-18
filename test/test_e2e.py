@@ -6,13 +6,12 @@ from src.incidente import (
     eliminar_incidencia,
     listar_incidencias,
 )
-from src.base_datos import db
+from src.base_datos import reiniciar_base_datos
 
 @pytest.fixture(autouse=True)
 def limpiar_base_datos():
-    """Limpia la base de datos antes de cada prueba."""
-    db["incidencias"].clear()
-    db["siguiente_id"] = 1
+    """Reinicia la base de datos antes de cada prueba."""
+    reiniciar_base_datos()
 
 def test_flujo_completo_e2e():
 

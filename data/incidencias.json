@@ -13,16 +13,8 @@
             "titulo": "Error en reporte",
             "descripcion": "PDF no se genera",
             "prioridad": "alta",
-            "estado": "abierta",
+            "estado": "cerrada",
             "asignado_a": "Finanzas"
-        },
-        "3": {
-            "id": 3,
-            "titulo": "Lentitud en consulta",
-            "descripcion": "Demora 10s",
-            "prioridad": "media",
-            "estado": "abierta",
-            "asignado_a": "IT"
         }
     },
     "siguiente_id": 4

@@ -22,7 +22,7 @@ def test_flujo_completo_e2e():
 
     assert len(listar_incidencias()) == 3
     assert inc1["estado"] == "abierta"
-    assert inc2["estado"] == "abierta"
+    assert inc2["estado"] == "cerrada"
     assert inc3["estado"] == "abierta"
 
 

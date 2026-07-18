@@ -2,20 +2,28 @@
     "incidencias": {
         "1": {
             "id": 1,
-            "titulo": "Inc1",
-            "descripcion": "d",
-            "prioridad": "baja",
-            "estado": "cerrada",
-            "asignado_a": "A"
+            "titulo": "Caída del sistema",
+            "descripcion": "No responde",
+            "prioridad": "crítica",
+            "estado": "abierta",
+            "asignado_a": "Soporte"
         },
         "2": {
             "id": 2,
-            "titulo": "Inc2",
-            "descripcion": "d",
+            "titulo": "Error en reporte",
+            "descripcion": "PDF no se genera",
+            "prioridad": "alta",
+            "estado": "abierta",
+            "asignado_a": "Finanzas"
+        },
+        "3": {
+            "id": 3,
+            "titulo": "Lentitud en consulta",
+            "descripcion": "Demora 10s",
             "prioridad": "media",
             "estado": "abierta",
-            "asignado_a": "B"
+            "asignado_a": "IT"
         }
     },
-    "siguiente_id": 3
+    "siguiente_id": 4
 }
